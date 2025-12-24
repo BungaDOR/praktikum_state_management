@@ -77,7 +77,7 @@ class AddTaskSheet extends StatelessWidget {
         children: [
           const Text('Tambah Tugas', 
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 24, color: Colors.green),
+            style: TextStyle(fontSize: 24, color: Color.fromARGB(255, 5, 116, 131)),
           ),
           TextField(
             autofocus: true,
@@ -88,7 +88,13 @@ class AddTaskSheet extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           ElevatedButton(
-            child: const Text('Add'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(83, 0, 187, 212),
+              foregroundColor: const Color.fromARGB(255, 2, 111, 125)
+            ),
+            child: const Text('Add',style: TextStyle(
+              fontWeight: FontWeight.bold
+            ),),
             onPressed: () {
               if (newTaskTitle.isNotEmpty) {
                 // Menambahkan data via Provider
