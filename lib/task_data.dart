@@ -1,6 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'dart:collection';
 
+// Model task
+class Task {
+  String name;
+  bool isDone;
+}
+
 class TaskData extends ChangeNotifier {
   // Data Private
   final List<String> _tasks = [];
