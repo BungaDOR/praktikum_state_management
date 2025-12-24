@@ -5,19 +5,21 @@ import 'dart:collection';
 class Task {
   String name;
   bool isDone;
+
+  Task({required this.name, this.isDone = false});
 }
 
 class TaskData extends ChangeNotifier {
   // Data Private
-  final List<String> _tasks = [];
+  final List<Task> _tasks = [];
 
   // Getter (agar data tidak bisa diubah langsung dari luar tanpa fungsi add)
-  UnmodifiableListView<String> get tasks => UnmodifiableListView(_tasks);
+  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
 
   int get taskCount => _tasks.length;
 
   void addTask(String newTask) {
-    _tasks.add(newTask);
+    _tasks.add(Task(name: newTask));
     // Memberitahu semua widget yang mendengarkan (Listeners) untuk rebuild
     notifyListeners();
   }
