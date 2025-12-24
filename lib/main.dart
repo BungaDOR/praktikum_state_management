@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'task_data.dart'; // Import model
+import 'task_screen.dart'; // Kita akan buat ini setelahnya
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    // Membungkus Root App agar Provider tersedia di seluruh aplikasi
+    ChangeNotifierProvider(
+      create: (context) => TaskData(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -10,104 +19,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dasar State Management',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const TaskListScreen(),
+      title: 'Provider Demo',
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: const TaskScreen(), // Halaman utama kita ganti
     );
   }
 }
 
-// === HALAMAN 1: Menampilkan List ===
-class TaskListScreen extends StatefulWidget {
-  const TaskListScreen({Key? key}) : super(key: key);
-
-  @override
-  State<TaskListScreen> createState() => _TaskListScreenState();
-}
-
-class _TaskListScreenState extends State<TaskListScreen> {
-  // State disimpan di sini (Parent)
-  final List<String> _taskList = [];
-
-  void _addTask(String newTask) {
-    setState(() {
-      _taskList.add(newTask);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('To-Do (setState)')),
-      body: _taskList.isEmpty
-          ? const Center(child: Text('Belum ada tugas'))
-          : ListView.builder(
-              itemCount: _taskList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: const Icon(Icons.check_circle_outline),
-                  title: Text(_taskList[index]),
-                );
-              },
-            ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () async {
-          // Navigasi ke Halaman 2 dan MENUNGGU data kembali (await)
-          final newTask = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddTaskScreen()),
-          );
-
-          // Jika ada data yang dikirim balik (tidak null), update state
-          if (newTask != null) {
-            _addTask(newTask);
-          }
-        },
-      ),
-    );
-  }
-}
-
-// === HALAMAN 2: Input Data ===
-class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
-
-  @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
-}
-
-class _AddTaskScreenState extends State<AddTaskScreen> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Tambah Tugas Baru')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Nama Tugas',
-                border: OutlineInputBorder(),
-              ),
-              autofocus: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Mengirim data kembali ke halaman sebelumnya (pop)
-                Navigator.pop(context, _controller.text);
-              },
-              child: const Text('Simpan Tugas'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
