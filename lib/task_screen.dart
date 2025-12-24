@@ -19,9 +19,13 @@ class TaskScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: taskData.taskCount,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(taskData.tasks[index]),
-                trailing: IconButton(
+              return CheckboxListTile(
+                title: Text(taskData.tasks[index].name),
+                value: taskData.tasks[index].isDone,
+                onChanged: (value) {
+                  taskData.toggleTask(index);
+                },
+                secondary: IconButton(
                   icon: const Icon(Icons.delete, color: Colors.red),
                   onPressed: () {
                     // Panggil fungsi di Provider
