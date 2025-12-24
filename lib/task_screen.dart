@@ -12,6 +12,7 @@ class TaskScreen extends StatelessWidget {
       appBar: AppBar(
         // Mengakses data taskCount langsung dari Provider
         title: Text('Provider To-Do (${Provider.of<TaskData>(context).taskCount})'),
+        backgroundColor: Colors.blue[200],
       ),
       body: Consumer<TaskData>(
         // Consumer hanya me-rebuild bagian ini saja saat data berubah
@@ -20,7 +21,16 @@ class TaskScreen extends StatelessWidget {
             itemCount: taskData.taskCount,
             itemBuilder: (context, index) {
               return CheckboxListTile(
-                title: Text(taskData.tasks[index].name),
+                controlAffinity: ListTileControlAffinity.leading,
+                activeColor: Colors.green,
+                checkColor: Colors.amber,
+                title: Text(taskData.tasks[index].name,
+                style: TextStyle(
+                    decoration: taskData.tasks[index].isDone
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
+                  ),
+                ),
                 value: taskData.tasks[index].isDone,
                 onChanged: (value) {
                   taskData.toggleTask(index);
@@ -38,7 +48,7 @@ class TaskScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.cyan,
         child: const Icon(Icons.add),
         onPressed: () {
           // Buka BottomSheet atau Halaman Baru

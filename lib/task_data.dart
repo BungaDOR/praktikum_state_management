@@ -31,5 +31,6 @@ class TaskData extends ChangeNotifier {
 
   void toggleTask(int index) {
     _tasks[index].isDone = !_tasks[index].isDone;
+    notifyListeners();
   }
 }
